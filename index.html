@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scientific Calculator</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="calc-container">
+    <header class="calc-header">
+      <span id="mode-label">Standard Mode</span>
+      <button id="toggle-btn" onclick="toggleMode()">Switch to Scientific</button>
+    </header>
+
+    <div class="display-container">
+      <div id="history" class="display-history"></div>
+      <div id="main-display" class="display-main">0</div>
+    </div>
+
+    <div id="keypad" class="keypad standard">
+      <button class="btn sci-btn" onclick="sciOp('sin')">sin</button>
+      <button class="btn sci-btn" onclick="sciOp('cos')">cos</button>
+      <button class="btn fn-btn" onclick="clearAll()">AC</button>
+      <button class="btn fn-btn" onclick="backspace()">DEL</button>
+      <button class="btn op-btn" onclick="append('%')">%</button>
+      <button class="btn op-btn" onclick="append('/')">÷</button>
+
+      <button class="btn sci-btn" onclick="sciOp('tan')">tan</button>
+      <button class="btn sci-btn" onclick="sciOp('log')">log</button>
+      <button class="btn" onclick="append('7')">7</button>
+      <button class="btn" onclick="append('8')">8</button>
+      <button class="btn" onclick="append('9')">9</button>
+      <button class="btn op-btn" onclick="append('*')">×</button>
+
+      <button class="btn sci-btn" onclick="sciOp('sqrt')">√</button>
+      <button class="btn sci-btn" onclick="sciOp('pow')">x²</button>
+      <button class="btn" onclick="append('4')">4</button>
+      <button class="btn" onclick="append('5')">5</button>
+      <button class="btn" onclick="append('6')">6</button>
+      <button class="btn op-btn" onclick="append('-')">−</button>
+
+      <button class="btn sci-btn" onclick="append('Math.PI')">π</button>
+      <button class="btn sci-btn" onclick="append('Math.E')">e</button>
+      <button class="btn" onclick="append('1')">1</button>
+      <button class="btn" onclick="append('2')">2</button>
+      <button class="btn" onclick="append('3')">3</button>
+      <button class="btn op-btn" onclick="append('+')">+</button>
+
+      <button class="btn sci-btn" onclick="append('(')">(</button>
+      <button class="btn sci-btn" onclick="append(')')">)</button>
+      <button class="btn sci-btn" onclick="sciOp('exp')">exp</button>
+      <button class="btn" onclick="append('0')">0</button>
+      <button class="btn" onclick="append('.')">.</button>
+      <button class="btn eq-btn" onclick="calculate()">=</button>
+    </div>
+
+    <footer class="calc-footer">
+      <span>Created by Arbaz Khan</span>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

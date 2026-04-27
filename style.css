@@ -1,0 +1,65 @@
+:root {
+  --bg-color: #f8fafc; --calc-bg: #ffffff; --display-bg: #f1f5f9; --text-main: #0f172a;
+  --text-muted: #64748b; --accent: #2563eb; --border: #e2e8f0;
+}
+
+* {box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif;}
+
+body {
+  background-color: var(--bg-color); display: flex; justify-content: center;
+  align-items: center; min-height: 100vh; padding: 20px;
+}
+
+.calc-container {
+  background: var(--calc-bg); width: 100%; max-width: 360px; border-radius: 24px;
+  border: 1px solid var(--border); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden; transition: max-width 0.3s ease;
+}
+
+.calc-container.scientific {max-width: 580px; /* Scientific Size */}
+
+.calc-header {
+  padding: 16px 20px; display: flex; justify-content: space-between; align-items: center;
+}
+
+#mode-label {font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase;}
+
+#toggle-btn {
+  padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+  background: #f8fafc; font-size: 0.7rem; font-weight: 600; cursor: pointer;
+}
+
+.display-container {padding: 30px 24px; text-align: right; background: var(--display-bg);}
+
+.display-main {
+  font-size: 2.5rem; font-family: 'JetBrains Mono', monospace; color: var(--text-main); 
+  overflow-x: auto; white-space: nowrap;
+}
+
+.display-main::-webkit-scrollbar {display: none;}
+.display-main {-ms-overflow-style: none; scrollbar-width: none;}
+.keypad {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border);}
+.keypad.scientific {grid-template-columns: repeat(6, 1fr);}
+.btn {background: #ffffff; border: none; height: 70px; font-size: 1.1rem; cursor: pointer;}
+.btn:active { background: #f1f5f9; }
+
+/* Special Button Styling */
+.op-btn { color: var(--accent); font-weight: 600; background: #f8fafc; }
+.fn-btn { color: #ef4444; background: #f8fafc; }
+.eq-btn { background: var(--accent); color: white; font-weight: 600; }
+
+.sci-btn { display: none; background: #f8fafc; color: var(--text-muted); font-size: 0.9rem; }
+.keypad.scientific .sci-btn { display: block; }
+
+.calc-footer {
+  padding: 12px; text-align: center; background: var(--display-bg); border-top: 1px solid var(--border);
+}
+
+.calc-footer span{font-size: 0.65rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1px;}
+
+@media (max-width: 600px) {
+  .calc-container.scientific { max-width: 95%; }
+  .keypad.scientific { grid-template-columns: repeat(4, 1fr); }
+}
+
+.btn:active {transform: scale(0.95); background-color: var(--btn-hover);}
