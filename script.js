@@ -21,8 +21,11 @@ function toggleMode() {
 }
 
 function append(value) {
-    if (currentInput === "0" && value !== ".") currentInput = value;
-    else currentInput += value;
+    if (currentInput === "0" && value !== "." && value !== "±" && value !== "^") {
+        currentInput = value;
+    } else {
+        currentInput += value;
+    }
     updateDisplay();
 }
 
@@ -38,21 +41,52 @@ function backspace() {
 }
 
 function updateDisplay() {
-    let displayFormat = currentInput
-        .replace(/\*/g, ' × ')
-        .replace(/\//g, ' ÷ ')
-        .replace(/Math\.PI/g, 'π')
-        .replace(/Math\.E/g, 'e');
-    mainDisplay.innerText = displayFormat;
-
-    // ADD THIS LINE: Automatically scroll to the far right
-    mainDisplay.scrollLeft = mainDisplay.scrollWidth;
+    mainDisplay.innerText = currentInput;
+    mainDisplay.scrollLeft = mainDisplay.scrollWidth; // Keeps text scrolled to the right
 }
 
 function calculate() {
     try {
-        const result = new Function('return ' + currentInput)();
-        currentInput = Number.isInteger(result) ? result.toString() : result.toFixed(4);
+        historyDisplay.innerText = currentInput + " =";
+        
+        // 1. Convert display symbols to JavaScript math operators
+        let expr = currentInput
+            .replace(/×/g, '*')
+            .replace(/÷/g, '/')
+            .replace(/π/g, 'Math.PI')
+            .replace(/e/g, 'Math.E')
+            .replace(/\^/g, '**')      // Converts ^ to power operator
+            .replace(/√/g, 'sqrt');    // Maps to our custom sqrt function below
+
+        // 2. Define custom math environment (Allows degrees instead of radians)
+        const mathFuncs = `
+            const sin = (x) => Math.sin(x * Math.PI / 180);
+            const cos = (x) => Math.cos(x * Math.PI / 180);
+            const tan = (x) => Math.tan(x * Math.PI / 180);
+            const log = (x) => Math.log10(x);
+            const sqrt = (x) => Math.sqrt(x);
+        `;
+
+        // Inner evaluation function
+        function evaluateExpression(expression) {
+            const result = new Function(mathFuncs + ' return ' + expression)();
+            if (isNaN(result) || !isFinite(result)) throw new Error("Invalid");
+            // Fix long decimal strings
+            return Number.isInteger(result) ? result.toString() : parseFloat(result.toFixed(6)).toString();
+        }
+
+        // 3. Handle quadratic/dual equations if the ± symbol is present
+        if (expr.includes('±')) {
+            let exprPlus = expr.replace(/±/g, '+');
+            let exprMinus = expr.replace(/±/g, '-');
+            let resPlus = evaluateExpression(exprPlus);
+            let resMinus = evaluateExpression(exprMinus);
+            currentInput = `${resPlus}, ${resMinus}`;
+        } else {
+            // Standard single evaluation
+            currentInput = evaluateExpression(expr);
+        }
+
         updateDisplay();
     } catch (e) {
         mainDisplay.innerText = "Error";
@@ -60,29 +94,17 @@ function calculate() {
     }
 }
 
-function sciOp(op) {
-    let val = parseFloat(currentInput);
-    let res = 0;
-    switch(op) {
-        case 'sin': res = Math.sin(val * Math.PI / 180); break;
-        case 'cos': res = Math.cos(val * Math.PI / 180); break;
-        case 'tan': res = Math.tan(val * Math.PI / 180); break;
-        case 'log': res = Math.log10(val); break;
-        case 'sqrt': res = Math.sqrt(val); break;
-        case 'pow': res = Math.pow(val, 2); break;
-        case 'exp': res = Math.exp(val); break;
-    }
-    currentInput = res.toString();
-    updateDisplay();
-}
-
+// Keyboard Support
 document.addEventListener('keydown', (e) => {
     if (/[0-9]/.test(e.key)) append(e.key);
     else if (e.key === ".") append(".");
     else if (e.key === "+") append("+");
     else if (e.key === "-") append("-");
-    else if (e.key === "*") append("*");
-    else if (e.key === "/") { e.preventDefault(); append("/"); }
+    else if (e.key === "*") append("×");
+    else if (e.key === "/") { e.preventDefault(); append("÷"); }
+    else if (e.key === "^") append("^");
+    else if (e.key === "(") append("(");
+    else if (e.key === ")") append(")");
     else if (e.key === "Enter") { e.preventDefault(); calculate(); }
     else if (e.key === "Backspace") backspace();
 });

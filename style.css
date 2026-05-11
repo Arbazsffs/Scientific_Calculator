@@ -29,7 +29,22 @@ body {
   background: #f8fafc; font-size: 0.7rem; font-weight: 600; cursor: pointer;
 }
 
-.display-container {padding: 30px 24px; text-align: right; background: var(--display-bg);}
+.display-container {
+  padding: 30px 24px 20px 24px; 
+  text-align: right; 
+  background: var(--display-bg);
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.display-history {
+  font-size: 1rem;
+  color: var(--text-muted);
+  min-height: 20px;
+  margin-bottom: 5px;
+}
 
 .display-main {
   font-size: 2.5rem; font-family: 'JetBrains Mono', monospace; color: var(--text-main); 
@@ -38,10 +53,10 @@ body {
 
 .display-main::-webkit-scrollbar {display: none;}
 .display-main {-ms-overflow-style: none; scrollbar-width: none;}
+
 .keypad {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border);}
 .keypad.scientific {grid-template-columns: repeat(6, 1fr);}
-.btn {background: #ffffff; border: none; height: 70px; font-size: 1.1rem; cursor: pointer;}
-.btn:active { background: #f1f5f9; }
+.btn {background: #ffffff; border: none; height: 70px; font-size: 1.1rem; cursor: pointer; transition: background 0.1s;}
 
 /* Special Button Styling */
 .op-btn { color: var(--accent); font-weight: 600; background: #f8fafc; }
@@ -62,4 +77,4 @@ body {
   .keypad.scientific { grid-template-columns: repeat(4, 1fr); }
 }
 
-.btn:active {transform: scale(0.95); background-color: var(--btn-hover);}
+.btn:active {transform: scale(0.95); background-color: #f1f5f9;}
